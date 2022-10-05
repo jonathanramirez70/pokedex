@@ -1,20 +1,35 @@
 var page = 1;
 var itemsPerPage = 20;
-const getList = async () => {
+let promiseList = [];
+let loading = false;
+const getList = () => {
 	const limit = itemsPerPage;
 	const offset = (page - 1) * itemsPerPage; 
-	let pokemons = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+	axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
+		.then(response => {
+			response.data.results.forEach(item => promiseList.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${item.name}`)));
+			Promise.all(promiseList).then(response => {
+				response.forEach(item => {
+					draw(item.data);
+				});
+				loading = false;
+				promiseList = [];
+			});
+		});
+}
+
+const draw = (pokemon) => {
 	let dg = document.getElementById('dgList');
-	pokemons.data.results.forEach(async item => {
-		pokemon = await getPokemonData(item.name);
-		dg.innerHTML += `
-			<div class="col-3 mb-2">
-				<div class="card">
+	dg.innerHTML += `
+		<div class="col-3 mb-2">
+			<a href="details.html?pokemon=${pokemon.id}" class="text-decoration-none">
+				<div class="card bg-dark">
+					<h5 class="card-title text-center text-light">${pokemon.name}</h5>
 					<img src="${pokemon.sprites.other['official-artwork'].front_default}" class="card-img-top" alt="...">
 				</div>
-			</div>
-		`;
-	});
+			</a>
+		</div>
+	`;
 }
 
 const getPokemonData =  async (name) => {
@@ -22,6 +37,19 @@ const getPokemonData =  async (name) => {
 	return pokemon.data;
 }
 
-window.addEventListener('load', () => {
+const handleInfiniteScroll = () => {
+	const endOfPage = (window.innerHeight + window.pageYOffset + 10) >= document.body.offsetHeight;
+	console.log((window.innerHeight + window.pageYOffset)  +"==>"+document.body.offsetHeight );
+	if (endOfPage && !loading) {
+		loading = true;
+	  	page ++;
+	  	getList();
+	}
+};
+
+window.addEventListener("scroll", handleInfiniteScroll);
+window.addEventListener('load', async () => {
 	getList();
+	//list.sort((a,b) => a.id - b.id );
+	//draw(list);
 });
