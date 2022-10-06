@@ -4,7 +4,7 @@ const getPokemonData =  async (id) => {
     console.log (data);
     document.getElementById("lblName").innerText = data.name;
     document.getElementById("img").src = data.sprites.other['official-artwork'].front_default;
-    let abilities = data.abilities.map(ability => '<span class="badge text-bg-primary">'+ability.ability.name+'</span>').join(" ");  
+    let abilities = data.abilities.map(ability => '<span class="badge rounded-pill text-bg-warning fs-5">'+ability.ability.name+'</span>').join(" ");  
     document.getElementById("abilities").innerHTML = abilities;
     document.getElementById("lblWeight").innerText = data.weight+" lb";
    
@@ -27,14 +27,13 @@ const getPokemonData =  async (id) => {
     if (data.sprites.front_shiny_female){
         drawSprites(data.sprites.front_shiny_female);
     }
-        
-}
+       }
 
 const drawSprites = (url) =>{
     let dgSprites =document.getElementById("sprites");
     dgSprites.innerHTML += `
         <div class="col-md-3 col-lg-2">
-            <img src="${url}" class="w100" alt="">
+            <img src="${url}" class="w200" alt="">
         </div>
         
     `;
