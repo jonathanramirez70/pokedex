@@ -14,6 +14,7 @@ const getList = () => {
 				});
 				loading = false;
 				promiseList = [];
+				loader(false);
 			});
 		});
 }
@@ -37,12 +38,22 @@ const getPokemonData =  async (name) => {
 	return pokemon.data;
 }
 
+const loader = (show) => {
+	let loaderDiv = document.getElementById('loader');
+	if(show) {
+		loaderDiv.classList.remove('d-none');
+	} else {
+		loaderDiv.classList.add('d-none');
+	}
+}
+
 const handleInfiniteScroll = () => {
 	const endOfPage = (window.innerHeight + window.pageYOffset + 10) >= document.body.offsetHeight;
 	console.log((window.innerHeight + window.pageYOffset)  +"==>"+document.body.offsetHeight );
 	if (endOfPage && !loading) {
 		loading = true;
-	  	page ++;
+		  page ++;
+		  loader(true);
 	  	getList();
 	}
 };
