@@ -27,7 +27,16 @@ const getPokemonData =  async (id) => {
     if (data.sprites.front_shiny_female){
         drawSprites(data.sprites.front_shiny_female);
     }
-       }
+       
+    const characteristic = await getCharacteristics(id);
+    document.getElementById('lblCharacteristics').innerText = characteristic.description;
+}
+
+    const getCharacteristics = async (pokemon) => {
+    let characteristics = await axios.get(`https://pokeapi.co/api/v2/characteristic/${pokemon}`);
+    let characteristic = characteristics.data.descriptions.find((p) => p.language.name == 'es');
+    return characteristic;
+}
 
 const drawSprites = (url) =>{
     let dgSprites =document.getElementById("sprites");
