@@ -33,11 +33,10 @@ const drawSprites = (url) =>{
     let dgSprites =document.getElementById("sprites");
     dgSprites.innerHTML += `
         <div class="col-md-3 col-lg-2">
-            <img src="${url}" class="w200" alt="">
+            <img src="${url}" class="w-200" alt="">
         </div>
         
     `;
-
 
 }
 
