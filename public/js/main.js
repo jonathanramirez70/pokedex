@@ -23,7 +23,7 @@ const draw = (pokemon) => {
 	dg.innerHTML += `
 		<div class="col-3 mb-2">
 			<a href="details.html?pokemon=${pokemon.id}" class="text-decoration-none">
-				<div class="card bg-dark">
+				<div class="card bg-black">
 					<h5 class="card-title text-center text-light">${pokemon.name}</h5>
 					<img src="${pokemon.sprites.other['official-artwork'].front_default}" class="card-img-top" alt="...">
 				</div>
