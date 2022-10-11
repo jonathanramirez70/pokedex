@@ -27,7 +27,7 @@ const getPokemonData =  async (id) => {
     if (data.sprites.front_shiny_female){
         drawSprites(data.sprites.front_shiny_female);
     }
-
+       
     const characteristic = await getCharacteristics(id);
     document.getElementById('lblCharacteristics').innerText = characteristic.description;
 }
